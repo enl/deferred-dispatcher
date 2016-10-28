@@ -4,6 +4,7 @@
 namespace Enl\DeferredDispatcher\Test;
 
 
+use Enl\DeferredDispatcher\Events;
 use Enl\DeferredDispatcher\Test\Stub\DeferredSubscriber;
 use Symfony\Component\EventDispatcher\Event;
 use Enl\DeferredDispatcher\DeferredEventDispatcher;
@@ -27,5 +28,24 @@ class DeferredEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $event = $dispatcher->dispatch(self::EVENT_TO_DEFER, new Event());
         $this->assertCount(1, $deferer->getDeferredEvents());
         $this->assertInstanceOf(Event::class, $event, 'Dispatcher should return Event');
+    }
+
+    public function testPlayDeferred()
+    {
+        $subscriber = new DeferredSubscriber([self::EVENT_TO_DEFER]);
+        $subscriber->setDeferredEvents([
+            [self::EVENT_TO_DEFER, new Event()]
+        ]);
+
+        $dispatcher = new DeferredEventDispatcher();
+        $executed = false;
+        $dispatcher->addListener(self::EVENT_TO_DEFER, function() use(&$executed) {
+            $executed = true;
+        });
+        $dispatcher->addSubscriber($subscriber);
+
+        $dispatcher->dispatch(Events::PLAY_DEFERRED);
+        $this->assertTrue($executed, 'Listener finally executed');
+        $this->assertCount(0, $subscriber->getDeferredEvents(), 'List of deferred events is empty.');
     }
 }
