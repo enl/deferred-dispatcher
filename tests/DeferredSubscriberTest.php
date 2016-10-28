@@ -76,4 +76,11 @@ class DeferredSubscriberTest extends \PHPUnit_Framework_TestCase
             );
         }
     }
+
+    public function testAddEvent()
+    {
+        $subscriber = new Stub\DeferredSubscriber();
+        $subscriber->addEvent('event-to-defer');
+        $this->assertEquals(['event-to-defer'], $subscriber->getEventsToDefer());
+    }
 }

@@ -20,7 +20,7 @@ class DeferredSubscriber implements EventSubscriberInterface
     /**
      * @var string[]
      */
-    private $eventsToDefer = [];
+    protected $eventsToDefer = [];
 
     /**
      * @var array [string, Event]
@@ -30,9 +30,18 @@ class DeferredSubscriber implements EventSubscriberInterface
     /**
      * @param string[] $eventsToDefer list of event names to defer
      */
-    public function __construct($eventsToDefer)
+    public function __construct(array $eventsToDefer = [])
     {
         $this->eventsToDefer = $eventsToDefer;
+    }
+
+    /**
+     * Adds an event to the list of events to defer
+     * @param $eventName
+     */
+    public function addEvent($eventName)
+    {
+        $this->eventsToDefer[] = $eventName;
     }
 
     /**

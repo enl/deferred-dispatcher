@@ -16,4 +16,20 @@ class DeferredSubscriber extends BaseSubscriber
     {
         $this->deferredEvents = $events;
     }
+
+    /**
+     * @return \string[]
+     */
+    public function getEventsToDefer()
+    {
+        return $this->eventsToDefer;
+    }
+
+    /**
+     * @param \string[] $eventsToDefer
+     */
+    public function setEventsToDefer($eventsToDefer)
+    {
+        $this->eventsToDefer = $eventsToDefer;
+    }
 }
