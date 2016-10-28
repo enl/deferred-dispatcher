@@ -4,6 +4,7 @@
   "type": "library",
   "description": "Extension for Symfony EventDispatcher which adds the way to defer handle of fired Event into later stage of request execution. ",
   "keywords": ["event dispatcher", "symfony", "postpone", "defer"],
+  "license": "MIT License",
   "authors": [{
     "name": "Alex Panshin",
     "email": "deadyaga@gmail.com",
