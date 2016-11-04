@@ -78,8 +78,7 @@ class DeferredSubscriber implements EventSubscriberInterface
     public function deferEvent(DeferEvent $event)
     {
         if (in_array($event->getName(), $this->eventsToDefer, true)) {
-            $this->deferredEvents[] = [$event->getName(), $event->getRealEvent()];
-            $event->defer();
+            $this->deferredEvents[] = $event->defer();
         }
     }
 

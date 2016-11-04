@@ -48,4 +48,25 @@ class DeferredEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($executed, 'Listener finally executed');
         $this->assertCount(0, $subscriber->getDeferredEvents(), 'List of deferred events is empty.');
     }
+
+    public function testEventPlaysOnce()
+    {
+        $subscriber1 = new DeferredSubscriber(['test-event']);
+        $subscriber2 = new DeferredSubscriber(['test-event']);
+
+        $dispatcher = new DeferredEventDispatcher();
+        $dispatcher->addSubscriber($subscriber1);
+        $dispatcher->addSubscriber($subscriber2);
+
+        $times = 0;
+
+        $dispatcher->addListener('test-event', function() use (&$times) {
+            $times++;
+        });
+
+        $dispatcher->dispatch('test-event');
+        $dispatcher->dispatch(Events::PLAY_DEFERRED);
+
+        $this->assertEquals(1, $times, 'Event should be handled exactly 1 time.');
+    }
 }

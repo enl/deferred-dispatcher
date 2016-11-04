@@ -41,10 +41,16 @@ class DeferEvent extends Event
 
     /**
      * Call this function if real event is deferred and will be executed earlier
+     * Stops propagation!
+     *
+     * @return array [string, Event]
      */
     public function defer()
     {
         $this->deferred = true;
+        $this->stopPropagation();
+
+        return [$this->name, $this->realEvent];
     }
 
     /**
