@@ -17,5 +17,14 @@ When you dispatch event from the list, it will be intercepted by `DeferredSubscr
 $dispatcher->dispatch(Events::PLAY_DEFERRED);
 ```
 
+## Subscribe `DeferredSubscriber` to another event ##
 
+The idea of playing deferred events by firing `Events::PLAY_DEFERRED` may be not that good, because it sticks your codebase (not configuration) to this dispatcher.
 
+So that, there is another opportunity:
+ 
+```php
+$subscriber = new DeferredSubscriber($eventsList);
+$dispatcher->addSubscriber($subscriber);
+$dispatcher->addListener('kernel.terminate', [$subscriber, 'playDeferred']);
+```
